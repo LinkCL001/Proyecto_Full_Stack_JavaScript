@@ -5,15 +5,20 @@ const exphbs = require("express-handlebars");
 const expressFileUpload = require("express-fileupload");
 const port = process.env.PORT || 3000;
 const indexRouter = require('./src/router');
-app.use(express.static(__dirname + "/src/public"));
+const front = require("./rutas/front");
+
+app.use(express.static(__dirname + "/rutas/public"));
 
 app.listen(port, () => {
   console.log(`El servidor está inicializando en el puerto ${port}`);
 });
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.set("view engine", "handlebars");
 
-app.set("views", "./src/views");
+app.set("views", "./views");
 
 app.use("/", express.static("public"));
 

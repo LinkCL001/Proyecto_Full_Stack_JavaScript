@@ -1,13 +1,14 @@
 {
   "name": "Proyecto_Full_Stack_JavaScript",
   "version": "1.0.0",
-  "description": "",
+  "description": "Imagenologia",
   "main": "Server.js",
   "dependencies": {
     "body-parser": "^1.20.0",
     "bootstrap": "^5.1.3",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-fileupload": "^1.3.1",
     "express-handlebars": "^6.0.3",
     "install": "^0.13.0",
     "jquery": "^3.6.0",
