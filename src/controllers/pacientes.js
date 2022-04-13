@@ -17,22 +17,23 @@ const {
     return res.json(pacientes);
   };
   const insertOne = async (_, res) => {
-    const pacientes = await ingresar(x);
-    return res.json(pacientes);
+    const { data } = req.params;
+    const paciente = await ingresar(data);
+    return res.json(paciente);
   };
   const deleteOne = async (req, res) => {
     const { rut } = req.params;
     const pacienteDelete = await eliminar(rut);
-    const pacientes = await listar();
-    return res.json({ pacienteDelete, pacientes });
+    const paciente = await listar();
+    return res.json({ pacienteDelete, paciente });
   };
   const updateOne = async (req, res) => {
-    const pacientes = await update(id, data);
-    return res.json(pacientes);
+    const paciente = await update(rut, data);
+    return res.json(paciente);
   };
   const upStatus = async (req, res) => {
-    const pacientes = await updateStatus(rut, estado);
-    return res.json(pacientes);
+    const paciente = await updateStatus(rut, estado);
+    return res.json(paciente);
   };
   
   module.exports = {

@@ -9,6 +9,19 @@ const pool = new Pool(
     : undefined
 );
 
+const listar = () =>
+  pool.query("SELECT * FROM pacientes").then((res) => res.rows);
+
+const buscar = async (pacienteRut) =>
+  pool
+    .query("SELECT * FROM pacientes WHERE rut = $1 LIMIT 1", [pacienteRut])
+    .then((res) => {
+      return res.rows;
+    })
+    .catch((e) => {
+      console.log({ e });
+    });
+
 const ingresar = (x) =>
   pool.query(
     "INSERT INTO pacientes(rut,email,nombres,primer_apellido,segundo_apellido,sexo,fecha_nacimiento,password,direccion,comuna,telefono,prevision,medico,admin) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",
@@ -32,10 +45,10 @@ const ingresar = (x) =>
 
 const login = async (email, password) =>
   pool
-    .query("SELECT * FROM pacientes WHERE email = $1 AND password = $2 LIMIT 1", [
-      email,
-      password,
-    ])
+    .query(
+      "SELECT * FROM pacientes WHERE email = $1 AND password = $2 LIMIT 1",
+      [email, password]
+    )
     .then((res) => {
       return res.rows[0];
     })
@@ -43,7 +56,25 @@ const login = async (email, password) =>
       console.log({ e });
     });
 
-  module.exports = {
-    ingresar,
-    login,
-  };
+const eliminar = (rut) => pool.query("DELETE FROM pacientes WHERE id = $1", [rut]);
+
+const update = async (rut, data) => {
+  try {
+    const updatePaciente = await pool.query(
+      `UPDATE pacientes SET email = '${data.email}', nombres = '${data.nombres}', primer_apellido = '${data.primer_apellido}',segundo_apellido = '${data.segundo_apellido}',sexo = '${data.sexo}',fecha_nacimiento = '${data.fecha_nacimiento}',password = '${data.password}',direccion = '${data.direccion}',comuna = '${data.comuna}',telefono = '${data.telefono}',prevision = '${data.prevision}' WHERE rut = ${rut} RETURNING*`
+    );
+    return updatePaciente.rows;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};
+
+module.exports = {
+  listar,
+  buscar,
+  ingresar,
+  login,
+  eliminar,
+  update,
+};

@@ -105,4 +105,5 @@ rutas.post("/login-inicio", async (req, res) => {
       console.log(e);
     });
 });
+
 module.exports = rutas;
