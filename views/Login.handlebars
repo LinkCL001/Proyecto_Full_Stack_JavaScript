@@ -1,0 +1,21 @@
+<h1>Imagenologia</h1>
+
+<div class="py-5 container">
+  <h2>Iniciar Sesión</h2>
+  <hr class="w-50" />
+
+  <form method="POST" action="/login-inicio" enctype="multipart/form-data">
+    <div class="form-group">
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" class="form-control w-50 m-auto" />
+      </div>
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control w-50 m-auto" />
+      </div>
+    </div>
+    <button class="btn btn-success mb-3">Ingresar</button>
+    <p>¿Aún no tienes cuenta? <a href="/paciente-create">Regístrate</a></p>
+  </form>
+</div>

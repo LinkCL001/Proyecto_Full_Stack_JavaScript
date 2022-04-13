@@ -1,63 +1,42 @@
+<div class="container">
 <h1>Registro Imagenologia</h1>
 
 <div class="py-4">
   <h2>Registro</h2>
   <hr class="w-50" />
 
-  <form method="POST" name="form1" action="/paciente-create" enctype="multipart/form-data">
-  <div class="form-group row w-50 m-auto">
-      <div class="form-group col-12 col-sm-6">
-        <label for="rut" class="form-label"
-        >Rut</label>
-        <input
-          type="text"
-          requiredplaceholder="Ingrese su Rut"
-          id="rut"
-          name="rut"
-          class="form-control m-auto"
-          onblur="return Rut(form1.rut.value)"
-        />
-      </div>
+  <form method="POST" id="form" name="form" action="/paciente-create" enctype="multipart/form-data">
     <div class="form-group row w-50 m-auto">
       <div class="form-group col-12 col-sm-6">
-        <label for="email" class="form-label"
-        >Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          class="form-control m-auto"
-        />
+        <label for="rut" class="form-label">Rut</label>
+        <input type="text" id="txtRut" onBlur="onRutBlur(this);" name="rut" class="form-control m-auto"
+          placeholder="Ingrese Rut Ej:11111111-1" maxlength="12" max="12" />
+      </div>
+      <script>
+        function onRutBlur(obj) {
+          if (VerificaRut(obj.value))
+            alert("Rut correcto");
+          else
+            alert("Rut incorrecto");
+        }
+      </script>
+    </div>
+    <div class="form-group row w-50 m-auto">
+      <div class="form-group col-12 col-sm-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" class="form-control m-auto" />
       </div>
       <div class="form-group col-12 col-sm-6">
-        <label for="nombres" class="form-label"
-        >Nombres</label>
-        <input
-          type="text"
-          id="nombres"
-          name="nombres"
-          class="form-control m-auto"
-        />
+        <label for="nombres" class="form-label">Nombres</label>
+        <input type="text" id="nombres" name="nombres" class="form-control m-auto" />
       </div>
       <div class="form-group col-12 col-sm-6">
-        <label for="primer_apellido" class="form-label"
-        >Primer Apellido</label>
-        <input
-          type="text"
-          id="primer_apellido"
-          name="primer_apellido"
-          class="form-control m-auto"
-        />
+        <label for="primer_apellido" class="form-label">Primer Apellido</label>
+        <input type="text" id="primer_apellido" name="primer_apellido" class="form-control m-auto" />
       </div>
       <div class="form-group col-12 col-sm-6">
-        <label for="segundo_apellido" class="form-label"
-          >Segundo Apellido</label>
-        <input
-          type="text"
-          id="segundo_apellido"
-          name="segundo_apellido"
-          class="form-control m-auto"
-        />
+        <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
+        <input type="text" id="segundo_apellido" name="segundo_apellido" class="form-control m-auto" />
       </div>
       <div class="form-group col-12 col-sm-6">
         <label for="sexo" class="form-label">Sexo</label>
@@ -68,24 +47,12 @@
         </select>
       </div>
       <div class="form-group col-12 col-sm-6">
-        <label for="fecha_nacimiento" class="form-label"
-          >Fecha de Nacimiento</label
-        >
-        <input
-          type="date"
-          id="fecha_nacimiento"
-          name="fecha_nacimiento"
-          class="form-control m-auto"
-        />
+        <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control m-auto" />
       </div>
       <div class="form-group col-12 col-sm-6">
         <label for="password" class="form-label">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          class="form-control m-auto"
-        />
+        <input type="password" id="password" name="password" class="form-control m-auto" />
       </div>
       <div class="form-group col-12 col-sm-6">
         <label for="" class="form-label">Repita la password</label>
@@ -93,30 +60,15 @@
       </div>
       <div class="form-group col-12 col-sm-6">
         <label for="direccion" class="form-label">Direccion</label>
-        <input
-          type="text"
-          id="direccion"
-          name="direccion"
-          class="form-control m-auto"
-        />
+        <input type="text" id="direccion" name="direccion" class="form-control m-auto" />
       </div>
       <div class="form-group col-12 col-sm-6">
         <label for="comuna" class="form-label">Comuna</label>
-        <input
-          type="text"
-          id="comuna"
-          name="comuna"
-          class="form-control m-auto"
-        />
+        <input type="text" id="comuna" name="comuna" class="form-control m-auto" />
       </div>
       <div class="form-group col-12 col-sm-6">
         <label for="telefono" class="form-label">Telefono</label>
-        <input
-          type="text"
-          id="telefono"
-          name="telefono"
-          class="form-control m-auto"
-        />
+        <input type="text" id="telefono" name="telefono" class="form-control m-auto" />
       </div>
       <div class="form-group col-12 col-sm-6">
         <label for="prevision" class="form-label">Prevision</label>
@@ -129,12 +81,53 @@
           <option value="Fonasa A">Particular</option>
         </select>
       </div>
-      <div class="form-group col-12 col-sm-12">
-        <label for="foto">Foto de perfil</label>
-        <input type="file" name="fotos" id="foto" />
-      </div>
     </div>
     <button type="submit" class="btn btn-info mb-3">Registrarme</button>
     <p><a href="/login"> Iniciar sesión</a></p>
+    <script>
+      function VerificaRut(rut) {
+        if (rut.toString().trim() != '' && rut.toString().indexOf('-') > 0) {
+          var caracteres = new Array();
+          var serie = new Array(2, 3, 4, 5, 6, 7);
+          var dig = rut.toString().substr(rut.toString().length - 1, 1);
+          rut = rut.toString().substr(0, rut.toString().length - 2);
+
+          for (var i = 0; i < rut.length; i++) {
+            caracteres[i] = parseInt(rut.charAt((rut.length - (i + 1))));
+          }
+
+          var sumatoria = 0;
+          var k = 0;
+          var resto = 0;
+
+          for (var j = 0; j < caracteres.length; j++) {
+            if (k == 6) {
+              k = 0;
+            }
+            sumatoria += parseInt(caracteres[j]) * parseInt(serie[k]);
+            k++;
+          }
+
+          resto = sumatoria % 11;
+          dv = 11 - resto;
+
+          if (dv == 10) {
+            dv = "K";
+          }
+          else if (dv == 11) {
+            dv = 0;
+          }
+
+          if (dv.toString().trim().toUpperCase() == dig.toString().trim().toUpperCase())
+            return true;
+          else
+            return false;
+        }
+        else {
+          return false;
+        }
+      }
+    </script>
   </form>
+</div>
 </div>
