@@ -16,10 +16,17 @@ const {
     const pacientes = await buscar(rut);
     return res.json(pacientes);
   };
-  const insertOne = async (_, res) => {
-    const { data } = req.params;
-    const paciente = await ingresar(data);
-    return res.json(paciente);
+  const insertOne = async (req, res) => {
+    const data = req.body;
+    console.log(data);
+    try {
+      const paciente = await ingresar(data);
+      return res.json(paciente);
+    } catch (error) {
+      res.status(500).json({
+        message:"Error De Ingreso a Base de datos"
+      })
+    }
   };
   const deleteOne = async (req, res) => {
     const { rut } = req.params;

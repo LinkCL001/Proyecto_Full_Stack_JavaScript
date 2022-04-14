@@ -4,7 +4,7 @@ const pacientesController = require('./controllers/pacientes');
 const loginController = require('./controllers/login');
 
 router.get('/pacientes', pacientesController.getAll)
-//router.post('/paciente', pacientesController.insertOne)
+router.post('/paciente', pacientesController.insertOne)
 
 // router.get('/pacientes/:id', pacientesController.getOne)
 // router.delete("/pacientes/:id", pacientesController.deleteOne)

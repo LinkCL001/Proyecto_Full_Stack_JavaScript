@@ -36,51 +36,82 @@ const validateToken = async (token) => {
   return user; //si existe lo devuelve como dato
 };
 
-const validateAdmin = async (req, res, next) => {//middleware validando admin usando cookies y el token jwt
+const validateAdmin = async (req, res, next) => {
+  //middleware validando admin usando cookies y el token jwt
   const cookies = await getCookies(req.headers.cookie);
   const token = await validateToken(cookies.token);
   if (!token.data.admin) {
-    res.redirect("/datos");//si admin false redirect datos
+    res.redirect("/datos"); //si admin false redirect datos
   }
   next();
 };
 
-rutas.get("/admin", validateAdmin, async (_, res) => {//ruta admin con axios
+rutas.get("/admin", validateAdmin, async (_, res) => {
+  //ruta admin con axios
   axios
-    .get("http://localhost:3000/skaters")
+    .get("http://localhost:3000/pacientes")
     .then((response) => {
       console.log(response.data);
-      res.render("admin", { pacientes: response.data });//render a admin con la data pacientes para rellenar la tabla
+      res.render("admin", { pacientes: response.data }); //render a admin con la data pacientes para rellenar la tabla
     })
     .catch((e) => {
       console.log(e);
     });
 });
 
-rutas.get("/datos", async (req, res) => {// validando usuario no admin usando cookies del headers y el token
+rutas.get("/datos", async (req, res) => {
+  // validando usuario no admin usando cookies del headers y el token
   const cookies = await getCookies(req.headers.cookie);
   const token = await validateToken(cookies.token);
   console.log(token);
   axios
-    .get(`http://localhost:3000/skaters/${token.data.rut}`)//obteniendo id para ingresar con usuario con su id respectiva
+    .get(`http://localhost:3000/pacientes/${token.data.rut}`) //obteniendo id para ingresar con usuario con su id respectiva
     .then((response) => {
       console.log(response.data);
-      res.render("datos", { paciente: response.data });//rendereando la data del paciente hacia datos handlebars
+      res.render("datos", { paciente: response.data }); //rendereando la data del paciente hacia datos handlebars
     })
     .catch((e) => {
       console.log(e);
     });
 });
 
-rutas.post("/paciente-create", (req, res) => {
-  req.body.medico = false; //obteniendo estado default booleano false para medico y admin
-  req.body.admin = false;
-  db.ingresar(req.body)
-    .then(() => res.redirect("/")) //ingreso exitoso redirige al :3000/
-    .catch(
-      (e) =>
-        res.render("error", { title: "Error al crear paciente", message: e }) //mensaje error de ingreso
-    );
+rutas.post("/paciente-create", async (req, res) => {
+  const {
+    rut,
+    email,
+    nombres,
+    primer_apellido,
+    segundo_apellido,
+    sexo,
+    fecha_nacimiento,
+    password,
+    direccion,
+    comuna,
+    telefono,
+    prevision,
+  } = req.body;
+  //req.body.medico = false; //obteniendo estado default booleano false para medico y admin
+  //req.body.admin = false;
+  try {
+    const response = await axios.post("http://localhost:3000/paciente", {
+      rut,
+      email,
+      nombres,
+      primer_apellido,
+      segundo_apellido,
+      sexo,
+      fecha_nacimiento,
+      password,
+      direccion,
+      comuna,
+      telefono,
+      prevision,
+      medico:false,
+      admin:false,
+    });
+    return res.redirect("/")
+  } catch (e) {console.log(e)}
+    res.render("error", { title:`Ups!! algo a salido mal`, message:`El Usuario ${nombres} ya existe` })
 });
 
 rutas.post("/login-inicio", async (req, res) => {
