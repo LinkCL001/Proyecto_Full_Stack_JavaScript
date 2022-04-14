@@ -17,7 +17,7 @@ const loginUser = async (req, res) => {
       );
       return res.json({ token })
     }
-    return res.json({ mensaje:'Usuario o contraseña incorrecta' })
+    return res.json({ message:'Usuario o contraseña incorrecta' })
 }
 
 module.exports = {

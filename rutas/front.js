@@ -90,8 +90,7 @@ rutas.post("/paciente-create", async (req, res) => {
     telefono,
     prevision,
   } = req.body;
-  //req.body.medico = false; //obteniendo estado default booleano false para medico y admin
-  //req.body.admin = false;
+
   try {
     const response = await axios.post("http://localhost:3000/paciente", {
       rut,
@@ -134,6 +133,7 @@ rutas.post("/login-inicio", async (req, res) => {
     })
     .catch((e) => {
       console.log(e);
+      res.render("error", {title:`Ups!! algo a salido mal`, message: 'Usuario o contraseña incorrecta'})
     });
 });
 
