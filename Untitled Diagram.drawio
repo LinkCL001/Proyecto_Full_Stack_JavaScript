@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-04-13T22:00:36.512Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36 Edg/100.0.1185.36" etag="oHF1I_AzYRrmlToeNTtW" version="17.4.2" type="github">
+<mxfile host="app.diagrams.net" modified="2022-04-14T00:40:12.883Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36 Edg/100.0.1185.36" etag="RW4UrhjGQoobPvC4Y7sd" version="17.4.2" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="1422" dy="1931" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#283618" math="0" shadow="0">
       <root>
@@ -679,7 +679,7 @@
             <mxRectangle x="194" y="250" width="90" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="clgeNX0isApsWxU3I4bh-2" value="rut VARCHAR (12 )[PK]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontColor=#FEFAE0;" vertex="1" parent="clgeNX0isApsWxU3I4bh-1">
+        <mxCell id="clgeNX0isApsWxU3I4bh-2" value="rut VARCHAR (12) [PK]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontColor=#FEFAE0;" vertex="1" parent="clgeNX0isApsWxU3I4bh-1">
           <mxGeometry y="30" width="245" height="30" as="geometry" />
         </mxCell>
         <mxCell id="clgeNX0isApsWxU3I4bh-3" value="email VARCHAR (20) NOT NULL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontColor=#FEFAE0;" vertex="1" parent="clgeNX0isApsWxU3I4bh-1">
