@@ -1,22 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/">Skate Park</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/Admin">Inicio <span class="sr-only">(current)</span></a>
-      </li>
-      
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      
-    </ul>
-  </div>
-</nav>
-<h1>Skate Park</h1>
+<h1>Imagenologia</h1>
 <h1>{{token}}</h1>
 <div class="py-4">
   <h2>Administración</h2>
@@ -24,29 +6,49 @@
   <table class="table table-dark">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Foto</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Años de experiencia</th>
-        <th scope="col">Especialidad</th>
-        <th scope="col">Estado</th>
+        <th scope="col">Rut</th>
+        <th scope="col">Email</th>
+        <th scope="col">Nombres</th>
+        <th scope="col">Primer Apellido</th>
+        <th scope="col">Segundo Apellido</th>
+        <th scope="col">Sexo</th>
+        <th scope="col">Fecha Nacimiento</th>
+        <th scope="col">Direccion</th>
+        <th scope="col">Comuna</th>
+        <th scope="col">Telefono</th>
+        <th scope="col">Prevision</th>
+        <th scope="col">Medico</th>
       </tr>
     </thead>
     <tbody>
-      {{#each skaters}}
-      <form method="post" action="/skater/{{this.id}}" >
+      {{#each pacientes}}
+      <form method="post" action="/paciente/{{this.rut}}" >
         <tr>
-          <th scope="row">{{this.id}}</th>
-          <td><img src="/imgs/{{this.foto}}" alt="foto" width="80px" /></td>
-          <td>{{this.nombre}}</td>
-          <td>{{this.anos_experiencia}}</td>
-          <td>{{this.especialidad}}</td>
-          <td><input type="checkbox" name="estado" value={{this.estado}} 
-          {{#if this.estado}}
+          <th scope="row">{{this.rut}}</th>
+          <td>{{this.email}}</td>
+          <td>{{this.nombres}}</td>
+          <td>{{this.primer_apellido}}</td>
+          <td>{{this.segundo_apellido}}</td>
+          <td>{{this.sexo}}</td>
+          <td>{{this.fecha_nacimiento}}</td>
+          <td>{{this.direccion}}</td>
+          <td>{{this.comuna}}</td>
+          <td>{{this.telefono}}</td>
+          <td>{{this.prevision}}</td>
+          <td><input type="checkbox" name="medico" value={{this.medico}} 
+          {{#if this.medico}}
             checked
             {{/if}}
           /></td>
           <td><button name="action" value="updateStatus">Validar</button></td>
+      <div>
+        <button
+          name="action"
+          type="submit"
+          class="btn btn-danger"
+          value="eliminar"
+        >Eliminar cuenta</button>
+      </div>
         </tr>
        </form> 
       {{/each}}

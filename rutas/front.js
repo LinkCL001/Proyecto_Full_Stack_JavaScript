@@ -11,11 +11,15 @@ rutas.get("/", (_, res) => {
 });
 
 rutas.get("/paciente-create", (_, res) => {
-  res.render("registro");
+  res.render("Registro");
 });
 
 rutas.get("/login", (_, res) => {
-  res.render("login");
+  res.render("Login");
+});
+
+rutas.get("/datos", (_, res) => {
+  res.render("Registro");
 });
 
 const getCookies = (cookiesString) => {
@@ -68,7 +72,7 @@ rutas.get("/datos", async (req, res) => {
     .get(`http://localhost:3000/pacientes/${token.data.rut}`) //obteniendo id para ingresar con usuario con su id respectiva
     .then((response) => {
       console.log(response.data);
-      res.render("datos", { paciente: response.data }); //rendereando la data del paciente hacia datos handlebars
+      res.render("Paciente", { paciente: response.data }); //rendereando la data del paciente hacia datos handlebars
     })
     .catch((e) => {
       console.log(e);
