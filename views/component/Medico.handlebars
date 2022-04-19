@@ -1,0 +1,33 @@
+<h1>Imagenologia</h1>
+<h1>{{token}}</h1>
+<div class="py-4 container">
+    <h2>Medico</h2>
+    <hr class="w-50" />
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Rut</th>
+                <th scope="col">Email</th>
+                <th scope="col">Nombres</th>
+                <th scope="col">Primer Apellido</th>
+                <th scope="col">Segundo Apellido</th>
+                <th scope="col">Sexo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each pacientes}}
+            <form method="post" action="/paciente/{{this.rut}}">
+                <tr>
+                    <th scope="row">{{this.rut}}</th>
+                    <td>{{this.email}}</td>
+                    <td>{{this.nombres}}</td>
+                    <td>{{this.primer_apellido}}</td>
+                    <td>{{this.segundo_apellido}}</td>
+                    <td>{{this.sexo}}</td>
+                    <div>
+                </tr>
+            </form>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

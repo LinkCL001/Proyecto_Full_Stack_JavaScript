@@ -5,10 +5,9 @@ const loginController = require('./controllers/login');
 
 router.get('/pacientes', pacientesController.getAll)
 router.post('/paciente', pacientesController.insertOne)
-
-// router.get('/pacientes/:id', pacientesController.getOne)
-// router.delete("/pacientes/:id", pacientesController.deleteOne)
-
+router.get('/paciente/:rut', pacientesController.getOne)
+router.delete('/paciente/:rut', pacientesController.deleteOne)
+router.post('/paciente/:rut', pacientesController.upStatus)
 router.post('/login', loginController.loginUser)
 
 module.exports = router

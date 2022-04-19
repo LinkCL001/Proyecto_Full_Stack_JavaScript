@@ -56,7 +56,7 @@ const login = async (email, password) =>
       console.log({ e });
     });
 
-const eliminar = (rut) => pool.query("DELETE FROM pacientes WHERE id = $1", [rut]);
+const eliminar = (rut) => pool.query("DELETE FROM pacientes WHERE rut = $1", [rut]);
 
 const update = async (rut, data) => {
   try {
@@ -70,6 +70,20 @@ const update = async (rut, data) => {
   }
 };
 
+const updateStatus = async (rut, medico) => {
+  try {
+    console.log(rut, medico);
+    const result = await pool.query(
+      `UPDATE pacientes SET medico = ${medico} WHERE rut = ${rut} RETURNING*`
+    );
+    console.log(result);
+    return result.rowCount;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
 module.exports = {
   listar,
   buscar,
@@ -77,4 +91,5 @@ module.exports = {
   login,
   eliminar,
   update,
+  updateStatus,
 };

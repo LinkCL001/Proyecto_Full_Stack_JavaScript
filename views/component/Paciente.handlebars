@@ -6,12 +6,12 @@
 <div class="py-4">
   <h2>Datos del perfil</h2>
   <hr class="w-50" />
-  {{#each pacientes}}
+  {{#each paciente}}
     <form
       method="POST"
-      action="/pacientes/{{this.rut}}"
+      action="/paciente/{{this.rut}}"
       enctype="multipart/form-data"
-      onsubmit="return confirm('¿Esta seguro de aplicar esta acción al usuario?')"
+      onsubmit="return confirm('¿Esta seguro de editar al usuario?')"
     >
     <div class="form-group row w-50 m-auto">
         <div class="form-group col-12 col-sm-6">

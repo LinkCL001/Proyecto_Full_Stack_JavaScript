@@ -1,6 +1,6 @@
 <h1>Imagenologia</h1>
 <h1>{{token}}</h1>
-<div class="py-4">
+<div class="py-4 container-fluid">
   <h2>Administración</h2>
   <hr class="w-50" />
   <table class="table table-dark">
@@ -24,6 +24,7 @@
       {{#each pacientes}}
       <form method="post" action="/paciente/{{this.rut}}" >
         <tr>
+      <div>
           <th scope="row">{{this.rut}}</th>
           <td>{{this.email}}</td>
           <td>{{this.nombres}}</td>
@@ -40,14 +41,14 @@
             checked
             {{/if}}
           /></td>
-          <td><button name="action" value="updateStatus">Validar</button></td>
-      <div>
-        <button
+          <td><button name="action" type="submit" value="updateStatus">Validar</button></td>
+        <td><button
           name="action"
           type="submit"
           class="btn btn-danger"
           value="eliminar"
         >Eliminar cuenta</button>
+        </td>
       </div>
         </tr>
        </form> 

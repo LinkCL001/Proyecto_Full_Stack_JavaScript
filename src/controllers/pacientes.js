@@ -39,7 +39,9 @@ const updateOne = async (req, res) => {
   return res.json(paciente);
 };
 const upStatus = async (req, res) => {
-  const paciente = await updateStatus(rut, estado);
+  const { rut } = req.params;
+  const { medico } = req.body;
+  const paciente = await updateStatus(rut, medico);
   return res.json(paciente);
 };
 
