@@ -75,7 +75,7 @@ rutas.get("/admin", validateAdmin, async (_, res) => {
   axios
     .get("http://localhost:3000/pacientes")
     .then((response) => {
-      console.log(response.data);
+//      console.log(response.data);
       res.render("Admin", { pacientes: response.data }); //render a admin con la data pacientes para rellenar la tabla
     })
     .catch((e) => {
@@ -87,7 +87,7 @@ rutas.get("/medico", validateMedico, async (_, res) => {
   axios
     .get("http://localhost:3000/pacientes") 
     .then((response) => {
-      console.log(response.data);
+//      console.log(response.data);
       res.render("Medico", { pacientes: response.data }); //rendereando la data del paciente hacia medico handlebars
     })
     .catch((e) => {
@@ -97,10 +97,10 @@ rutas.get("/medico", validateMedico, async (_, res) => {
 
 rutas.get("/paciente", validatePaciente ,async (req, res) => {
   axios
-    .get("http://localhost:3000/pacientes") //obteniendo id para ingresar con usuario con su id respectiva
+    .get("http://localhost:3000/paciente") //obteniendo id para ingresar con usuario con su id respectiva
     .then((response) => {
-      console.log(response.data);
-      res.render("Paciente", { paciente: response.data }); //rendereando la data del paciente hacia datos handlebars
+     console.log(response.data[0]);
+      res.render("Paciente", { paciente: response.data}); //rendereando la data del paciente hacia datos handlebars
     })
     .catch((e) => {
       console.log(e);
@@ -175,7 +175,7 @@ rutas.post("/login-inicio", async (req, res) => {
 
 rutas.post("/paciente-delete/:rut", async (req, res) => {//eliminar usuario
   const { rut } = req.params;// obtener rut desde params
-  console.log(token);
+//  console.log(token);
   axios
     .get(`http://localhost:3000/pacientes/${token.data.rut}`)//obtener data del id con axios
     .then((response) => {
@@ -205,7 +205,7 @@ rutas.post("/paciente/:rut", async (req, res) => {//eliminar editar y cambiar es
       axios
         .delete(`http://localhost:3000/pacientes/${rut}`)
         .then((response) => {
-          console.log(response);
+//          console.log(response);
           let message = 'No se pudo eliminar el Paciente';
           if (response.data.pacienteDelete.rowCount > 0) {
             message = 'Usuario Eliminado'

@@ -12,9 +12,9 @@ const pool = new Pool(
 const listar = () =>
   pool.query("SELECT * FROM pacientes").then((res) => res.rows);
 
-const buscar = async (pacienteRut) =>
+const buscar = async (rut) =>
   pool
-    .query("SELECT * FROM pacientes WHERE rut = $1 LIMIT 1", [pacienteRut])
+    .query("SELECT * FROM pacientes WHERE rut = $1 LIMIT 1", [rut])
     .then((res) => {
       return res.rows;
     })
