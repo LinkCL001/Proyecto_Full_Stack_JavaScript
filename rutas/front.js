@@ -6,6 +6,8 @@ const secretKey = process.env["SECRET_KEY"];
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
+const URL_BACKEND = 'http://localhost:3000';
+
 rutas.get("/", (_, res) => {
   res.render("Dashboard");
 });
@@ -51,11 +53,12 @@ const validateAdmin = async (req, res, next) => {
 };
 
 const validateMedico = async (req, res, next) => {
+
   //middleware validando medico usando cookies y el token jwt
   const cookies = await getCookies(req.headers.cookie);
   const token = await validateToken(cookies.token);
   if (!token.data.medico) {
-    res.redirect("/admin"); //si medico false redirect paciente
+    res.redirect("/admin"); //si medico false redirect admin
   }
   next();
 };
@@ -67,15 +70,15 @@ const validatePaciente = async (req, res, next) => {
   if (!token.data) {
     res.redirect("/"); //si medico false redirect paciente
   }
+  req.token = token;
   next();
 };
 
 rutas.get("/admin", validateAdmin, async (_, res) => {
   //ruta admin con axios
   axios
-    .get("http://localhost:3000/pacientes")
+    .get(`${URL_BACKEND}/api/pacientes`)
     .then((response) => {
-//      console.log(response.data);
       res.render("Admin", { pacientes: response.data }); //render a admin con la data pacientes para rellenar la tabla
     })
     .catch((e) => {
@@ -85,9 +88,8 @@ rutas.get("/admin", validateAdmin, async (_, res) => {
 
 rutas.get("/medico", validateMedico, async (_, res) => {
   axios
-    .get("http://localhost:3000/pacientes") 
+    .get(`${URL_BACKEND}/api/pacientes`) 
     .then((response) => {
-//      console.log(response.data);
       res.render("Medico", { pacientes: response.data }); //rendereando la data del paciente hacia medico handlebars
     })
     .catch((e) => {
@@ -95,12 +97,11 @@ rutas.get("/medico", validateMedico, async (_, res) => {
     });
 });
 
-rutas.get("/paciente", validatePaciente ,async (req, res) => {
+rutas.get("/paciente", validatePaciente,async (req, res) => {
   axios
-    .get("http://localhost:3000/paciente") //obteniendo id para ingresar con usuario con su id respectiva
+    .get(`${URL_BACKEND}/api/paciente/${req.token.data.rut}`) //obteniendo rut para ingresar con usuario con su rut respectiva
     .then((response) => {
-     console.log(response.data[0]);
-      res.render("Paciente", { paciente: response.data}); //rendereando la data del paciente hacia datos handlebars
+      res.render("Paciente", { pacientes: response.data}); //rendereando la data del paciente hacia datos handlebars
     })
     .catch((e) => {
       console.log(e);
@@ -116,6 +117,7 @@ rutas.post("/paciente-create", async (req, res) => {
     segundo_apellido,
     sexo,
     fecha_nacimiento,
+    edad,
     password,
     direccion,
     comuna,
@@ -124,7 +126,7 @@ rutas.post("/paciente-create", async (req, res) => {
   } = req.body;
 
   try {
-    const response = await axios.post("http://localhost:3000/paciente", {
+    const response = await axios.post("http://localhost:3000/api/paciente", {
       rut,
       email,
       nombres,
@@ -132,6 +134,7 @@ rutas.post("/paciente-create", async (req, res) => {
       segundo_apellido,
       sexo,
       fecha_nacimiento,
+      edad,
       password,
       direccion,
       comuna,
@@ -149,22 +152,20 @@ rutas.post("/login-inicio", async (req, res) => {
   //se obtiene del body email password
   const { email, password } = req.body;
   axios
-    .post("http://localhost:3000/login", { email, password }) //se ingresa la data por axios
+    .post("http://localhost:3000/api/login", { email, password }) //se ingresa la data por axios
     .then(async (response) => {
-      console.log(response);
       const user = await jwt.verify(response.data.token, secretKey); //verificar token usuario
+      console.log(user);
       if (user.data.admin) {
         //si es admin
         res.cookie("token", response.data.token);
-        res.cookie("test", response.data.token);
-        res.redirect("/Admin"); //redirige a admin
+        res.redirect("/admin"); //redirige a admin
       } else if (user.data.medico){//si es medico
         res.cookie("token", response.data.token);
-        res.cookie("test", response.data.token);
-        res.redirect("/Medico"); //redirige a medico
-      } else {//de lo contrario
+        res.redirect("/medico"); //redirige a medico
+      } else if (user.data) {//de lo contrario
         res.cookie("token", response.data.token);
-        res.redirect("/Paciente"); // redirige a paciente
+        res.redirect("/paciente"); // redirige a paciente
       }
     })
     .catch((e) => {
@@ -175,11 +176,9 @@ rutas.post("/login-inicio", async (req, res) => {
 
 rutas.post("/paciente-delete/:rut", async (req, res) => {//eliminar usuario
   const { rut } = req.params;// obtener rut desde params
-//  console.log(token);
   axios
-    .get(`http://localhost:3000/pacientes/${token.data.rut}`)//obtener data del id con axios
+    .get(`http://localhost:3000/api/pacientes/${token.data.rut}`)//obtener data del id con axios
     .then((response) => {
-      console.log(response.data);
       res.render("datos", { paciente: response.data });// renderea a datos con la data obtenida de axios
     })
     .catch((e) => {
@@ -203,9 +202,8 @@ rutas.post("/paciente/:rut", async (req, res) => {//eliminar editar y cambiar es
       break;
     case "eliminar"://eliminar usando axios con el id ya obtenido en la linea 110
       axios
-        .delete(`http://localhost:3000/pacientes/${rut}`)
+        .delete(`http://localhost:3000/api/pacientes/${rut}`)
         .then((response) => {
-//          console.log(response);
           let message = 'No se pudo eliminar el Paciente';
           if (response.data.pacienteDelete.rowCount > 0) {
             message = 'Usuario Eliminado'

@@ -13,12 +13,11 @@ const getAll = async (_, res) => {
 };
 const getOne = async (req, res) => {
   const { rut } = req.params;
-  const pacientes = await buscar(rut);
-  return res.json(pacientes);
+  const paciente = await buscar(rut);
+  return res.json(paciente);
 };
 const insertOne = async (req, res) => {
   const data = req.body;
-  console.log(data);
   try {
     const paciente = await ingresar(data);
     return res.json(paciente);
