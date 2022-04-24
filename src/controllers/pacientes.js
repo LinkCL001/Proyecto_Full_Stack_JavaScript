@@ -12,9 +12,9 @@ const getAll = async (_, res) => {
   return res.json(pacientes);
 };
 const getOne = async (req, res) => {
-  const { rut } = req.params;
-  const paciente = await buscar(rut);
-  return res.json(paciente);
+  const { id } = req.params;
+  const usuario = await buscar(id);
+  return res.json(usuario);
 };
 const insertOne = async (req, res) => {
   const data = req.body;
@@ -28,14 +28,17 @@ const insertOne = async (req, res) => {
   }
 };
 const deleteOne = async (req, res) => {
-  const { rut } = req.params;
-  const pacienteDelete = await eliminar(rut);
-  const paciente = await listar();
-  return res.json({ pacienteDelete, paciente });
+  const { id } = req.params;
+  const pacienteDelete = await eliminar(id);
+  const usuarios = await listar();
+  return res.json({ pacienteDelete, usuarios });
 };
 const updateOne = async (req, res) => {
-  const paciente = await update(rut, data);
-  return res.json(paciente);
+  const { id } = req.params;
+  const data = req.body;
+  const pacienteUpdate = await update(id, data)
+  const usuario = await buscar(id);
+  return res.json({ pacienteUpdate, usuario });
 };
 const upStatus = async (req, res) => {
   const { rut } = req.params;

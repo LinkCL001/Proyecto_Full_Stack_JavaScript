@@ -1,3 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Imagenologia</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Inicio <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-expanded="false">
+          Usuarios
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/login">Iniciar Sesion</a>
+          <a class="dropdown-item" href="/paciente-create">Registrarse</a>
+        </div>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right ">
+      <li>
+        <a href="/login" class="btn btn-primary m-2">Iniciar Sesión</a>
+      </li>
+      <li>
+        <a href="/paciente-create" class="btn btn-success m-2 ">Registrarme</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 <h1>Imagenologia</h1>
 
 {{#if success}}
@@ -6,10 +38,10 @@
 <div class="py-4">
   <h2>Datos del perfil</h2>
   <hr class="w-50" />
-  {{#each pacientes}}
+  {{#each usuarios}}
     <form
       method="POST"
-      action="/paciente/{{this.rut}}"
+      action="/paciente-update/{{this.id}}"
       enctype="multipart/form-data"
       onsubmit="return confirm('¿Esta seguro de editar al usuario?')"
     >
@@ -19,8 +51,7 @@
           <input
             name="rut"
             class="form-control m-auto"
-            disabled
-            value={{this.rut}}
+            value="{{this.rut}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
@@ -28,31 +59,34 @@
           <input
             name="email"
             class="form-control m-auto"
-            value={{this.email}}
+            value="{{this.email}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Nombres</label>
           <input
+            type="text"
             class="form-control m-auto"
             name="nombres"
-            value={{this.nombres}}
+            value="{{this.nombres}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Primer Apellido</label>
           <input
+            type="text"
             name="primer_apellido"
             class="form-control m-auto"
-            value={{this.primer_apellido}}
+            value="{{this.primer_apellido}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Segundo Apellido</label>
           <input
+            type="text"
             name="segundo_apellido"
             class="form-control m-auto"
-            value={{this.segundo_apellido}}
+            value="{{this.segundo_apellido}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
@@ -61,7 +95,7 @@
             name="password"
             type="password"
             class="form-control m-auto"
-            value={{this.password}}
+            value="{{this.password}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
@@ -69,63 +103,71 @@
           <input
             type="password"
             class="form-control m-auto"
-            value={{this.password}}
+            value="{{this.password}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Sexo</label>
           <input
+            type="text"
             name="sexo"
             class="form-control m-auto"
-            value={{this.sexo}}
+            value="{{this.sexo}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Fecha De Nacimiento</label>
           <input
-            name="fecha_naciminto"
+            type="date"
+            name="fecha_nacimiento"
             class="form-control m-auto"
-            value={{this.fecha_nacimiento}}
+            value="{{this.fecha_nacimiento}}"
           />
-        </div>
+        </div> 
         <div class="form-group col-12 col-sm-6">
           <label>Edad</label>
           <input
+            type="text"
             name="edad"
             class="form-control m-auto"
-            value={{this.edad}}
+            value="{{this.edad}}"
           />
-        </div>
+        </div> 
+       
         <div class="form-group col-12 col-sm-6">
           <label>Direccion</label>
           <input
+            type="text"
             name="direccion"
             class="form-control m-auto"
-            value={{this.direccion}}
+            value="{{this.direccion}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Comuna</label>
           <input
+            type="text"
             name="comuna"
             class="form-control m-auto"
-            value={{this.comuna}}
+            value="{{this.comuna}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Telefono</label>
           <input
+            type="text"
             name="telefono"
             class="form-control m-auto"
-            value={{this.telefono}}
+            value="{{this.telefono}}"
           />
         </div>
         <div class="form-group col-12 col-sm-6">
           <label>Prevision</label>
           <input
+            type="text"
             name="prevision"
             class="form-control m-auto"
-            value={{this.prevision}}
+            value="{{this.prevision}}"
           />
         </div>
       </div>
@@ -136,6 +178,14 @@
           class="btn btn-secondary"
           value="editar"
         >Actualizar</button>
+      </div>
+      <div class="mb-1">
+        <button
+          name="action"
+          type="submit"
+          class="btn btn-danger"
+          value="eliminar"
+        >Eliminar cuenta</button>
       </div>
     </form>
   {{/each}}

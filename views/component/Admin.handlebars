@@ -21,37 +21,29 @@
       </tr>
     </thead>
     <tbody>
-      {{#each pacientes}}
-      <form method="post" action="/paciente/{{this.rut}}" >
+      {{#each usuarios}}
+      <form method="post" action="/paciente/{{this.id}}">
         <tr>
-      <div>
-          <th scope="row">{{this.rut}}</th>
-          <td>{{this.email}}</td>
-          <td>{{this.nombres}}</td>
-          <td>{{this.primer_apellido}}</td>
-          <td>{{this.segundo_apellido}}</td>
-          <td>{{this.sexo}}</td>
-          <td>{{this.fecha_nacimiento}}</td>
-          <td>{{this.direccion}}</td>
-          <td>{{this.comuna}}</td>
-          <td>{{this.telefono}}</td>
-          <td>{{this.prevision}}</td>
-          <td><input type="checkbox" name="medico" value={{this.medico}} 
-          {{#if this.medico}}
-            checked
-            {{/if}}
-          /></td>
-          <td><button name="action" type="submit" value="updateStatus">Validar</button></td>
-        <td><button
-          name="action"
-          type="submit"
-          class="btn btn-danger"
-          value="eliminar"
-        >Eliminar cuenta</button>
-        </td>
-      </div>
+          <div>
+            <th scope="row">{{this.rut}}</th>
+            <td>{{this.email}}</td>
+            <td>{{this.nombres}}</td>
+            <td>{{this.primer_apellido}}</td>
+            <td>{{this.segundo_apellido}}</td>
+            <td>{{this.sexo}}</td>
+            <td>{{this.fecha_nacimiento}}</td>
+            <td>{{this.direccion}}</td>
+            <td>{{this.comuna}}</td>
+            <td>{{this.telefono}}</td>
+            <td>{{this.prevision}}</td>
+            <div>
+            <td><input type="checkbox" name="medico" value={{this.medico}} {{#if this.medico}} checked {{/if}} /></td>
+            <td><button name="action" type="submit" value="updateStatus">Validar</button></td>
+            <td><button name="action" type="submit" class="btn btn-danger" value="eliminar">Eliminar cuenta</button></td>
+            </div>
+          </div>
         </tr>
-       </form> 
+      </form>
       {{/each}}
     </tbody>
   </table>

@@ -5,7 +5,7 @@
   <h2>Registro</h2>
   <hr class="w-50" />
 
-  <form method="POST" id="form" name="form" action="/paciente-create" enctype="multipart/form-data">
+  <form method="POST" id="form" name="form" action="/paciente-create" enctype="multipart/form-data" >
     <div class="form-group row w-50 m-auto">
       <div class="form-group col-12 col-sm-6">
         <label for="rut" class="form-label">Rut</label>
@@ -48,7 +48,7 @@
       </div>
       <div class="form-group col-12 col-sm-6">
         <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
-        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control m-auto" />
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control m-auto"/>
       </div>
       <div class="form-group col-12 col-sm-6">
         <label for="edad" class="form-label">Edad</label>
@@ -74,9 +74,9 @@
         <label for="telefono" class="form-label">Telefono</label>
         <input type="text" id="telefono" name="telefono" class="form-control m-auto" />
       </div>
-      <div class="form-group col-12 col-sm-6">
+       <div class="form-group col-12 col-sm-6">
         <label for="prevision" class="form-label">Prevision</label>
-        <select name="prevision" type="text" id="prevision">
+        <select name="prevision" type="text" id="prevision" class="form-control m-auto">
           <option value="Fonasa A">Fonasa A</option>
           <option value="Fonasa B">Fonasa B</option>
           <option value="Fonasa C">Fonasa C</option>
@@ -131,6 +131,7 @@
           return false;
         }
       }
+      
     </script>
   </form>
 </div>

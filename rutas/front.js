@@ -6,7 +6,7 @@ const secretKey = process.env["SECRET_KEY"];
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
-const URL_BACKEND = 'http://localhost:3000';
+const URL_BACKEND = "http://localhost:3000";
 
 rutas.get("/", (_, res) => {
   res.render("Dashboard");
@@ -47,18 +47,17 @@ const validateAdmin = async (req, res, next) => {
   const cookies = await getCookies(req.headers.cookie);
   const token = await validateToken(cookies.token);
   if (!token.data.admin) {
-    res.redirect("/medico"); //si admin false redirect paciente
+    res.redirect("/"); //si admin false redirect main
   }
   next();
 };
 
 const validateMedico = async (req, res, next) => {
-
   //middleware validando medico usando cookies y el token jwt
   const cookies = await getCookies(req.headers.cookie);
   const token = await validateToken(cookies.token);
   if (!token.data.medico) {
-    res.redirect("/admin"); //si medico false redirect admin
+    res.redirect("/"); //si medico false redirect main
   }
   next();
 };
@@ -68,7 +67,7 @@ const validatePaciente = async (req, res, next) => {
   const cookies = await getCookies(req.headers.cookie);
   const token = await validateToken(cookies.token);
   if (!token.data) {
-    res.redirect("/"); //si medico false redirect paciente
+    res.redirect("/"); //si medico false redirect main
   }
   req.token = token;
   next();
@@ -88,7 +87,7 @@ rutas.get("/admin", validateAdmin, async (_, res) => {
 
 rutas.get("/medico", validateMedico, async (_, res) => {
   axios
-    .get(`${URL_BACKEND}/api/pacientes`) 
+    .get(`${URL_BACKEND}/api/pacientes`)
     .then((response) => {
       res.render("Medico", { pacientes: response.data }); //rendereando la data del paciente hacia medico handlebars
     })
@@ -97,15 +96,19 @@ rutas.get("/medico", validateMedico, async (_, res) => {
     });
 });
 
-rutas.get("/paciente", validatePaciente,async (req, res) => {
+rutas.get("/paciente", validatePaciente, async (req, res) => {
   axios
-    .get(`${URL_BACKEND}/api/paciente/${req.token.data.rut}`) //obteniendo rut para ingresar con usuario con su rut respectiva
+    .get(`${URL_BACKEND}/api/paciente/${req.token.data.id}`) //obteniendo id para ingresar con usuario con su rut respectiva
     .then((response) => {
-      res.render("Paciente", { pacientes: response.data}); //rendereando la data del paciente hacia datos handlebars
+      res.render("Paciente", { usuarios: response.data }); //rendereando la data del paciente hacia datos handlebars
     })
     .catch((e) => {
       console.log(e);
     });
+});
+
+rutas.get("/pedir-hora", validatePaciente, async (req, res) => {
+  axios.get(`${URL_BACKEND}/api/horas/${req.id}`);
 });
 
 rutas.post("/paciente-create", async (req, res) => {
@@ -124,7 +127,6 @@ rutas.post("/paciente-create", async (req, res) => {
     telefono,
     prevision,
   } = req.body;
-
   try {
     const response = await axios.post("http://localhost:3000/api/paciente", {
       rut,
@@ -140,17 +142,21 @@ rutas.post("/paciente-create", async (req, res) => {
       comuna,
       telefono,
       prevision,
-      medico:false,
-      admin:false,
+      medico: false,
+      admin: false,
     });
-    return res.redirect("/")
-  } catch (e) {console.log(e)}
-    res.render("error", { title:`Ups!! algo a salido mal`, message:`El Usuario ${nombres} ya existe` })
+    return res.redirect("/login");
+  } catch (e) {
+    console.log(e);
+  }
+  res.render("error", {
+    title: `Ups!! algo a salido mal`,
+    message: `El Usuario ${nombres} ya existe`,
+  });
 });
 
 rutas.post("/login-inicio", async (req, res) => {
-  //se obtiene del body email password
-  const { email, password } = req.body;
+  const { email, password } = req.body; //se obtiene del body email password
   axios
     .post("http://localhost:3000/api/login", { email, password }) //se ingresa la data por axios
     .then(async (response) => {
@@ -160,64 +166,76 @@ rutas.post("/login-inicio", async (req, res) => {
         //si es admin
         res.cookie("token", response.data.token);
         res.redirect("/admin"); //redirige a admin
-      } else if (user.data.medico){//si es medico
+      } else if (user.data.medico) {
+        //si es medico
         res.cookie("token", response.data.token);
         res.redirect("/medico"); //redirige a medico
-      } else if (user.data) {//de lo contrario
+      } else if (user.data) {
+        //de lo contrario
         res.cookie("token", response.data.token);
         res.redirect("/paciente"); // redirige a paciente
       }
     })
     .catch((e) => {
       console.log(e);
-      res.render("error", {title:`Ups!! algo a salido mal`, message: 'Usuario o contraseña incorrecta'})
+      res.render("error", {
+        title: `Ups!! algo a salido mal`,
+        message: "Usuario o contraseña incorrecta",
+      });
     });
 });
 
-rutas.post("/paciente-delete/:rut", async (req, res) => {//eliminar usuario
-  const { rut } = req.params;// obtener rut desde params
-  axios
-    .get(`http://localhost:3000/api/pacientes/${token.data.rut}`)//obtener data del id con axios
-    .then((response) => {
-      res.render("datos", { paciente: response.data });// renderea a datos con la data obtenida de axios
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-  const pacientes = await db.listar();//lo busca en la base de datos
-  res.render("Delete", { pacientes });
-});
+// rutas.post("/paciente-delete/:id", async (req, res) => {
+//   //eliminar usuario
+//   const { id } = req.params; // obtener rut desde params
+//   axios
+//     .get(`http://localhost:3000/api/paciente/${token.data.id}`) //obtener data del id con axios
+//     .then((response) => {
+//       res.render("paciente", { usuario: response.data }); // renderea a datos con la data obtenida de axios
+//     })
+//     .catch((e) => {
+//       console.log(e);
+//     });
+//   const usuarios = await db.listar(); //lo busca en la base de datos
+//   res.render("Delete", { usuarios });
+// });
 
-rutas.post("/paciente/:rut", async (req, res) => {//eliminar editar y cambiar estado en una ruta post
-  const { rut } = req.params;
+rutas.post("/paciente-update/:id", async (req, res) => {//eliminar editar y cambiar estado en una ruta post
+  const { id } = req.params;
   const { action } = req.body;
   switch (action) {
-    case "editar"://editar usando la data obtenida del body
-      delete req.body.action;
-      try {
-        await db.update(rut, req.body).then(() => res.redirect("/"));//editando con su rut y utilizandom informacion actualizada del body, para luego redireccionar al inicio
-      } catch (e) {
-        res.render("error", { title: "Error al editar usuario", message: e });
-      }
-      break;
-    case "eliminar"://eliminar usando axios con el id ya obtenido en la linea 110
-      axios
-        .delete(`http://localhost:3000/api/pacientes/${rut}`)
+    case "editar": //editar usando la data obtenida del body
+ //   delete req.body.action;
+       axios
+        .post(`http://localhost:3000/api/paciente/${id}`)
         .then((response) => {
-          let message = 'No se pudo eliminar el Paciente';
+          res.render("paciente", { usuario: response.data });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      break;
+    case "eliminar": //eliminar usando axios con el id ya obtenido en la linea 110
+      axios
+        .delete(`http://localhost:3000/api/paciente/${id}`)
+        .then((response) => {
+          let message = "No se pudo eliminar el Paciente";
           if (response.data.pacienteDelete.rowCount > 0) {
-            message = 'Usuario Eliminado'
+            message = "Usuario Eliminado";
           }
-          res.render("Dashboard", { pacientes: response.data.pacientes, message })//al eliminar renderea al home
+          res.render("Dashboard", {
+            usuario: response.data.usuario,
+            message,
+          }); //al eliminar renderea al home
         })
         .catch((e) => {
           console.log(e);
         });
       break;
     case "updateStatus":
-      const { medico } = req.body;// obtiene estado desde el body
+      const { medico } = req.body; // obtiene estado desde el body
       try {
-        await db.updateStatus(rut, !!medico).then(() => res.redirect("/Admin"));//estado false redirige a admin
+        await db.updateStatus(rut, !!medico).then(() => res.redirect("/Admin")); //estado false redirige a admin
       } catch (e) {
         res.render("error", { title: "Error al editar medico", message: e });
       }
@@ -227,10 +245,11 @@ rutas.post("/paciente/:rut", async (req, res) => {//eliminar editar y cambiar es
   }
 });
 
-rutas.put("/update-estado/:rut", async (req, res) => {// editar estado boolerano false a true 
-  const { rut } = req.params;//obtener id desde params
-  const medico = Object.values(req.body);//obtener estado desde el body
-  const result = await updateStatus(medico, rut);//llamar a la funcion de la bd
+rutas.put("/update-estado/:id", async (req, res) => {
+  // editar estado boolerano false a true
+  const { id } = req.params; //obtener id desde params
+  const medico = Object.values(req.body); //obtener estado desde el body
+  const result = await updateStatus(medico, id); //llamar a la funcion de la bd
   result > 0
     ? res.status(200).send(true)
     : console.log("Error al editar Medico");

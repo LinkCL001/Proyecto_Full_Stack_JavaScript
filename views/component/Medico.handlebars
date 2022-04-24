@@ -7,23 +7,31 @@
         <thead>
             <tr>
                 <th scope="col">Rut</th>
-                <th scope="col">Email</th>
                 <th scope="col">Nombres</th>
                 <th scope="col">Primer Apellido</th>
-                <th scope="col">Segundo Apellido</th>
-                <th scope="col">Sexo</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Codigo</th>
+                <th scope="col">Examen</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Comentario</th>
+                <th scope="col">Orden Medica</th>
             </tr>
         </thead>
         <tbody>
-            {{#each pacientes}}
-            <form method="post" action="/paciente/{{this.rut}}">
+            {{#each ficha_examen}}
+            <form method="post" action="/paciente/{{this.id}}">
                 <tr>
-                    <th scope="row">{{this.rut}}</th>
-                    <td>{{this.email}}</td>
+                    <td>{{this.rut}}</th>
                     <td>{{this.nombres}}</td>
                     <td>{{this.primer_apellido}}</td>
-                    <td>{{this.segundo_apellido}}</td>
-                    <td>{{this.sexo}}</td>
+                    <td>{{this.edad}}</td>
+                    <td>{{this.codigo}}</td>
+                    <td>{{this.nombre_examen}}</td>
+                    <td>{{this.fecha}}</td>
+                    <td>{{this.hora}}</td>
+                    <td>{{this.comentario}}</td>
+                    <td><img src="/imgs/{{this.orden_medica}}" alt="foto" width="80px" /></td>
                     <div>
                 </tr>
             </form>
