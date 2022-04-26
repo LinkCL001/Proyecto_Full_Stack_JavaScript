@@ -1,0 +1,44 @@
+<div class="py-4">
+    <h2>Solicitud de Hora Imagenologia</h2>
+    <hr class="w-50" />
+
+<div class="py-4">
+  <h2>Pedir Hora</h2>
+  <hr class="w-50" />
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Exámen</th>
+        <th scope="col">Codigo Exámen</th>
+        <th scope="col">Nombre Exámen</th>
+        <th scope="col">Fecha Exámen</th>
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each tipos_examenes}}
+      <form method="post" id="form" name="form" action="/pedir-hora" enctype="multipart/form-data">
+        <tr>
+          <th scope="row">{{this.nombre}}</th>
+      {{/each}}
+      {{#each examenes}}
+          <td>{{this.codigo}}</td>
+          <td>{{this.nombre_examen}}</td>
+      {{/each}}
+      {{#each horas}}      
+          <td>{{this.fecha}}</td>
+          <td><input type="checkbox" name="activa" value={{this.activa}} 
+          {{#if this.activa}}checked{{/if}}/></td>
+          <td><button name="action" value="updateStatus">Validar</button></td>
+      {{/each}}         
+        </tr>              
+        <div class="form-group row w-50 m-auto">
+          <div class="form-group col-12 col-sm-12">
+            <label for="orden_medica">Orden Medica</label>
+            <input type="file" name="orden_medica" id="orden_medica" />
+          </div>
+        </div>
+       </form> 
+    </tbody>
+  </table>
+</div>

@@ -4,6 +4,7 @@ const rutas = Router();
 const axios = require("axios");
 const secretKey = process.env["SECRET_KEY"];
 const jwt = require("jsonwebtoken");
+// const { v4: uuidv4 } = require('uuid');
 const { response } = require("express");
 
 const URL_BACKEND = "http://localhost:3000";
@@ -107,8 +108,25 @@ rutas.get("/paciente", validatePaciente, async (req, res) => {
     });
 });
 
-rutas.get("/pedir-hora", validatePaciente, async (req, res) => {
-  axios.get(`${URL_BACKEND}/api/horas/${req.id}`);
+rutas.get("/pedir-hora",  async (req, res) => { //validatePaciente,
+  res.render("hora")
+});
+
+rutas.post("/pedir-hora/", validatePaciente, async (req, res) => { //
+  const id = req.token.data.id
+  const {  } = req.body;
+  const fotos  = req.files.orden_medica;
+  fotos.mv(`${__dirname}/public/imgs/${id}+${fotos.name}`, (e) => {//guardando la foto en directorio con id
+    if (e) {
+      console.log(e);
+    }else {
+      db.ingresarHoras((id, req.body).then(() => res.redirect("/paciente")));
+      console.log("Archivo subido con exito");
+    }
+  });
+  
+  // req.body.foto = fotos.name;
+  res.send("info recibida")
 });
 
 rutas.post("/paciente-create", async (req, res) => {
@@ -127,6 +145,7 @@ rutas.post("/paciente-create", async (req, res) => {
     telefono,
     prevision,
   } = req.body;
+  console.log(req.body);
   try {
     const response = await axios.post("http://localhost:3000/api/paciente", {
       rut,
@@ -161,7 +180,7 @@ rutas.post("/login-inicio", async (req, res) => {
     .post("http://localhost:3000/api/login", { email, password }) //se ingresa la data por axios
     .then(async (response) => {
       const user = await jwt.verify(response.data.token, secretKey); //verificar token usuario
-      console.log(user);
+      //console.log(user);
       if (user.data.admin) {
         //si es admin
         res.cookie("token", response.data.token);
@@ -204,16 +223,13 @@ rutas.post("/paciente-update/:id", async (req, res) => {//eliminar editar y camb
   const { id } = req.params;
   const { action } = req.body;
   switch (action) {
-    case "editar": //editar usando la data obtenida del body
- //   delete req.body.action;
-       axios
-        .post(`http://localhost:3000/api/paciente/${id}`)
-        .then((response) => {
-          res.render("paciente", { usuario: response.data });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    case "editar"://editar usando la data obtenida del body
+      delete req.body.action;
+      try {
+        await db.update(id, req.body).then(() => res.redirect("/paciente"));//editando con su id y utilizandom informacion actualizada del body, para luego redireccionar al inicio
+      } catch (e) {
+        res.render("error", { title: "Error al editar usuario", message: e });
+      }
       break;
     case "eliminar": //eliminar usando axios con el id ya obtenido en la linea 110
       axios
@@ -223,7 +239,7 @@ rutas.post("/paciente-update/:id", async (req, res) => {//eliminar editar y camb
           if (response.data.pacienteDelete.rowCount > 0) {
             message = "Usuario Eliminado";
           }
-          res.render("Dashboard", {
+          res.render("Login", {
             usuario: response.data.usuario,
             message,
           }); //al eliminar renderea al home

@@ -2,6 +2,7 @@ require("dotenv").config();
 const { Pool } = require("pg");
 //const { parseISO, format } = require("date-fns");
 var format = require("date-fns/format");
+const { id } = require("date-fns/locale");
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -88,6 +89,33 @@ const updateStatus = async (rut, medico) => {
   }
 };
 
+const ingresarTiposExamenes = (x) => 
+pool.query(`INSERT INTO tipos_examenes(nombre) VALUES($1);`,[
+  x.nombre,
+])
+
+const ingresarExamenes = (x) => 
+pool.query(`INSERT INTO examenes (id_tipo_examen, codigo, nombre_examen) VALUES ($1, '$2', '$3');`,[
+  x.codigo,
+  x.nombre_examen,
+])
+
+const ingresarHoras = (x) => 
+pool.query(`INSERT INTO horas(id_examen, fecha, activa, orden_medica) VALUES ($1, '$2', true, '$4');`,[
+  x.fecha,
+  x.activa,
+  x.orden_medica,
+])
+
+const listarTiposExamenes = () =>
+  pool.query("SELECT id, nombre FROM tipos_examenes;").then((res) => res.rows);
+
+const listarExamenes = () => 
+  pool.query("SELECT id, id_tipo_examen, codigo, nombre_examen FROM examenes;").then((res) => res.rows);
+
+const listarHoras = () =>
+  pool.query("SELECT id, id_examen, fecha, activa, orden_medica FROM horas;").then((res) => res.rows);
+
 module.exports = {
   listar,
   buscar,
@@ -96,4 +124,36 @@ module.exports = {
   eliminar,
   update,
   updateStatus,
+  ingresarTiposExamenes,
+  ingresarExamenes,
+  ingresarHoras,
+  listarTiposExamenes,
+  listarExamenes,
+  listarHoras,
 };
+
+
+
+// //WITH data(nombre, codigo, nombre_examen, fecha, activa, orden_medica) AS (
+//   VALUES                                 -- provide data here
+//      (text '$1',text '$2',text '$3',datetime '$4',bool=true ,text '$5')  -- see below
+//       --  more?                          -- works for multiple input rows
+//   )
+// , ins1 AS (
+//   INSERT INTO tipos_examenes (nombre)
+//   SELECT nombre FROM data  
+//   ON     CONFLICT DO NOTHING             
+//   RETURNING nombre, id AS id_tipo_examen
+//   )
+// , ins2 AS (
+//   INSERT INTO examenes (id_tipo_examen, codigo, nombre_examen)
+//   SELECT id_tipo_examen, codigo, nombre_examen
+//   FROM   data
+//   JOIN   ins1 USING (nombre)
+//   RETURNING id_tipo_examen, id_examen
+//   )
+// INSERT INTO horas (id_examen, fecha, activa, orden_medica )
+// SELECT id_examen, fecha, activa, orden_medica
+// FROM   data
+// JOIN   ins1 USING (nombre)
+// JOIN   ins2 USING (id_tipo_examen);
