@@ -84,10 +84,13 @@ pool.query(`INSERT INTO horas_examenes (id_hora, id_examen, id_usuario, orden_me
 ])
 
 const listarExamenes = () =>
-  pool.query("SELECT examenes.*, tipos_examenes.* FROM examenes examenes, tipos_examenes tipos_examenes WHERE  	examenes.id_tipo_examen = tipos_examenes.id").then((res) => res.rows);
+  pool.query("SELECT horas.*, examenes.*, tipos_examenes.*  FROM horas horas, examenes examenes, tipos_examenes tipos_examenes  WHERE  examenes.id_tipo_examen = tipos_examenes.id 	AND examenes.id = horas.id").then((res) => res.rows);
 
 const listarHoras = () =>
 pool.query("SELECT id, fecha, activa FROM horas;").then((res) => res.rows);
+
+const listarExamenesHoras = () => 
+pool.query("SELECT horas_examenes.*, usuarios.*, horas.*, examenes.* FROM horas_examenes horas_examenes, usuarios usuarios, horas horas, examenes examenes WHERE  	horas_examenes.id_usuario = usuarios.id 	AND horas_examenes.id_hora = horas.id 	AND horas_examenes.id_examen = examenes.id").then((res) => res.rows);
 
 
 
@@ -101,4 +104,5 @@ module.exports = {
   ingresarHoras,
   listarExamenes,
   listarHoras,
+  listarExamenesHoras,
 };
