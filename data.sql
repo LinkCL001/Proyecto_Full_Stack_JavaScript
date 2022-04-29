@@ -36,18 +36,23 @@ CREATE TABLE examenes (
 
 CREATE TABLE horas (
 	id SERIAL,
-	id_examen INT REFERENCES examenes (id),
 	fecha TIMESTAMP,
 	activa bool DEFAULT false,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE horas_examenes (
+	id SERIAL,
+	id_hora INT REFERENCES horas(id),
+	id_examen INT REFERENCES examenes(id),
+	id_usuario INT REFERENCES usuarios(id),
 	orden_medica VARCHAR (255),
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE ficha_examen (
+CREATE TABLE fichas_examenes (
 	id SERIAL,
-	id_usuario INT REFERENCES usuarios (id),
-	id_examen INT REFERENCES examenes (id),
-	id_horas INT REFERENCES horas (id),
+	id_hora_examen INT REFERENCES horas_examenes(id),
 	estado VARCHAR (255),
 	comentario VARCHAR (255),
 	resultado VARCHAR (255),
@@ -57,7 +62,7 @@ CREATE TABLE ficha_examen (
 
 --Scanner
 --403001
---TAC  DE CRANEO ENCEFALICA, CEREBRO
+--TAC DE CRANEO ENCEFALICA, CEREBRO
 --403002
 --TAC  DE HIPOTALAMO-HIPOFISIS O SILLA TURCA
 --403003
@@ -96,7 +101,7 @@ CREATE TABLE ficha_examen (
 --401001
 --CRANEO AP LAT
 --401002
---CAVUM_LARINGE
+--CAVUM LARINGE
 --401004
 --TORAX_PLACA_EXTRA
 --401006

@@ -108,26 +108,54 @@ rutas.get("/paciente", validatePaciente, async (req, res) => {
     });
 });
 
-rutas.get("/pedir-hora",  async (req, res) => { //validatePaciente,
-  res.render("hora")
+rutas.get("/pedir-examenes", validatePaciente, async (req, res) => { //validatePaciente,
+  axios
+    .get(`${URL_BACKEND}/api/examenes`)
+    .then((response) => {
+      res.render("Examenes", { examenes: response.data });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 });
 
-rutas.post("/pedir-hora/", validatePaciente, async (req, res) => { //
-  const id = req.token.data.id
-  const {  } = req.body;
-  const fotos  = req.files.orden_medica;
-  fotos.mv(`${__dirname}/public/imgs/${id}+${fotos.name}`, (e) => {//guardando la foto en directorio con id
-    if (e) {
-      console.log(e);
-    }else {
-      db.ingresarHoras((id, req.body).then(() => res.redirect("/paciente")));
-      console.log("Archivo subido con exito");
-    }
+rutas.post("/pedir-examenes", validatePaciente, async (req, res) => { //
+  axios
+  .get(`${URL_BACKEND}/api/horas`)
+  .then((response) => {
+    res.render("Horas", { horas: response.data });
+  })
+  .catch((e) => {
+    console.log(e);
   });
-  
+
+
+    //console.log(req.body.id_examen[0]);
+    //const id_examen = req.body.id_examen[0];
+    // const fecha = req.body.fecha;
+    // const activa = req.body.activa
+    // try {
+    //   await db.listarHoras().then(() => res.render("Horas", { horas: response.data }));//editando con su id y utilizandom informacion actualizada del body, para luego redireccionar al inicio
+    // } catch (e) {
+    //   res.render("error", { title: "Error al listar las horas", message: e });
+    // }
+    // res.send("info recibida")
+
+  //  const id = req.token.data.id
+ 
+  // const fotos  = req.files.orden_medica;
+  // fotos.mv(`${__dirname}/public/imgs/${id}+${fotos.name}`, (e) => {//guardando la foto en directorio con id
+  //   if (e) {
+  //     console.log(e);
+  //   }else {
+  //     db.ingresarHoras((id, req.body).then(() => res.redirect("/pedir-hora")));
+  //     console.log("Archivo subido con exito");
+  //   }
+  // });
   // req.body.foto = fotos.name;
-  res.send("info recibida")
+
 });
+
 
 rutas.post("/paciente-create", async (req, res) => {
   const {
@@ -145,7 +173,6 @@ rutas.post("/paciente-create", async (req, res) => {
     telefono,
     prevision,
   } = req.body;
-  console.log(req.body);
   try {
     const response = await axios.post("http://localhost:3000/api/paciente", {
       rut,
@@ -249,11 +276,11 @@ rutas.post("/paciente-update/:id", async (req, res) => {//eliminar editar y camb
         });
       break;
     case "updateStatus":
-      const { medico } = req.body; // obtiene estado desde el body
+      const { activa } = req.body; // obtiene estado desde el body
       try {
-        await db.updateStatus(rut, !!medico).then(() => res.redirect("/Admin")); //estado false redirige a admin
+        await db.updateStatus(id, !!activa).then(() => res.redirect("/Admin")); //estado false redirige a admin
       } catch (e) {
-        res.render("error", { title: "Error al editar medico", message: e });
+        res.render("error", { title: "Error al editar estado", message: e });
       }
       break;
     default:
@@ -264,11 +291,11 @@ rutas.post("/paciente-update/:id", async (req, res) => {//eliminar editar y camb
 rutas.put("/update-estado/:id", async (req, res) => {
   // editar estado boolerano false a true
   const { id } = req.params; //obtener id desde params
-  const medico = Object.values(req.body); //obtener estado desde el body
-  const result = await updateStatus(medico, id); //llamar a la funcion de la bd
+  const activa = Object.values(req.body); //obtener estado desde el body
+  const result = await updateStatus(id, activa); //llamar a la funcion de la bd
   result > 0
     ? res.status(200).send(true)
-    : console.log("Error al editar Medico");
+    : console.log("Error al editar hora");
 });
 
 module.exports = rutas;

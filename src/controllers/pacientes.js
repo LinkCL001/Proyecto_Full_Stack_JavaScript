@@ -5,6 +5,10 @@ const {
   eliminar,
   update,
   updateStatus,
+  listarHoras,
+  listarExamenes,
+  listarTiposExamenes,
+  ingresarHoras,
 } = require("../models/db");
 
 const getAll = async (_, res) => {
@@ -40,12 +44,7 @@ const updateOne = async (req, res) => {
   const usuario = await buscar(id);
   return res.json({ pacienteUpdate, usuario });
 };
-const upStatus = async (req, res) => {
-  const { rut } = req.params;
-  const { medico } = req.body;
-  const paciente = await updateStatus(rut, medico);
-  return res.json(paciente);
-};
+
 
 module.exports = {
   getAll,
@@ -53,5 +52,4 @@ module.exports = {
   insertOne,
   deleteOne,
   updateOne,
-  upStatus,
 };
