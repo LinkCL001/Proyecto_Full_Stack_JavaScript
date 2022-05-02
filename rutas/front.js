@@ -75,7 +75,7 @@ rutas.get("/admin", validateAdmin, async (_, res) => {
   axios
     .get(`${URL_BACKEND}/api/pacientes`)
     .then((response) => {
-      res.render("Admin", { pacientes: response.data }); //render a admin con la data pacientes para rellenar la tabla
+      res.render("Admin", { usuarios: response.data }); //render a admin con la data pacientes para rellenar la tabla
     })
     .catch((e) => {
       console.log(e);
@@ -115,12 +115,13 @@ rutas.get("/pedir-examenes", validatePaciente, async (req, res) => {
     });
 });
 
-rutas.post("/pedir-examenes", validatePaciente, async (req, res) => {
+rutas.post("/crear-examen", validatePaciente, async (req, res) => {
   console.log(req.body);
-  const id_hora = req.body.id_hora[0];
-  const id_examen = req.body.id_examen[0];
+  const id_hora = req.body.id_hora;
+  const id_examen = req.body.id_examen;
   const id_usuario = req.token.data.id;
-  const fotos = req.files.orden_medica;
+  const orden_medica =req.body.orden_medica;
+  const { fotos } = req.files;
   req.body.foto = fotos.name;
   fotos.mv(`${__dirname}/public/imgs/${id_usuario}+${fotos.name}`, (e) => {
     //guardando la foto en directorio con id

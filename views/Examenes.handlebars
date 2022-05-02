@@ -12,30 +12,33 @@
         <th scope="col">id Examen</th>
         <th scope="col">Codigo Exámen</th>
         <th scope="col">Nombre Exámen</th>
+        <th scope="col">Nombre Exámen</th>
+        <th scope="col">Nombre Exámen</th>
       </tr>
     </thead>
-  <input name="id_examen" type="text">  
-  <input name="id_hora" type="text">    
+   
     <tbody>      
       {{#each examenes}}
-      <form method="post" action="/pedir-examenes" enctype="multipart/form-data">
+      <form method="post" action="/crear-examen" enctype="multipart/form-data">
         <tr>
-          <td>{{this.id}}</td>
+          <td>{{this.id_hora}}</td>
+          <td>{{this.id_examen}}</td>
           <td>{{this.fecha}}</td>
-          <td>{{this.activa}}</td> 
+          <td><input type="checkbox" name="activa" value=""{{#if this.activa}}checked{{/if}}>{{this.activa}}</td>
           <td>{{this.codigo}}</td>
           <td>{{this.nombre_examen}}</td>
           <td>{{this.nombre}}</td>
         </tr> 
       {{/each}} 
-              <div class="form-group row w-50 m-auto">
+      <input name="id_examen" type="text" value="1">  
+      <input name="id_hora" type="text" value="10">          
+        <div class="form-group row w-50 m-auto">
           <div class="form-group col-12 col-sm-12">
-            <label for="orden_medica">Orden Medica</label>
-            <input type="file" name="orden_medica" id="foto" />
-            <button name="action" value="tomarHora">Tomar Hora</button>  
+            <label for="fotos">Orden Medica</label>
+            <input type="file" name="fotos" id="fotos" />
+            <button class="btn btn-info mb-3" name="orden_medica" value="fotos">Tomar Hora</button>  
           </div>
         </div>
-       <td><button type="submit" class="btn btn-info mb-3" name="action" value="tomarExamen">Seleccionar Examenes</button></td>
        </form> 
     </tbody>
   </table>

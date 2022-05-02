@@ -77,9 +77,9 @@ const update = async (id, data) => {
 
 const ingresarHoras = (x) => 
 pool.query(`INSERT INTO horas_examenes (id_hora, id_examen, id_usuario, orden_medica) VALUES($1, $2, $3, '$4');`,[
-  x.id_hora,
-  x.id_examen,
-  x.id_usuario,
+  x.id_horas,
+  x.id_examenes,
+  x.id_usuarios,
   x.orden_medica,
 ])
 

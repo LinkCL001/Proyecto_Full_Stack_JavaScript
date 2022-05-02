@@ -1,7 +1,7 @@
 CREATE DATABASE imagenologia;
 
 CREATE TABLE usuarios (
-	id SERIAL,
+	id_usuarios SERIAL,
 	rut varchar(12) UNIQUE NOT NULL,
 	email varchar(100) NOT NULL,
 	nombres varchar(20) NOT NULL,
@@ -17,46 +17,46 @@ CREATE TABLE usuarios (
 	prevision varchar(10) NOT NULL,
 	medico bool NOT NULL DEFAULT false,
 	admin bool NULL DEFAULT false,
-	PRIMARY KEY (id)
+	PRIMARY KEY (id_usuarios)
 );
 
 CREATE TABLE tipos_examenes (
-	id SERIAL,
-	nombre VARCHAR (45),
-	PRIMARY KEY (id)
+	id_tipos_examenes SERIAL,
+	tipo_examen VARCHAR (45),
+	PRIMARY KEY (id_tipos_examenes)
 );
 
 CREATE TABLE examenes (
-	id SERIAL,
-	id_tipo_examen INT REFERENCES tipos_examenes(id),
+	id_examenes SERIAL,
+	id_tipo_examen INT REFERENCES tipos_examenes(id_tipos_examenes),
 	codigo VARCHAR(150) UNIQUE,
 	nombre_examen VARCHAR (255),
-	PRIMARY KEY (id)	
+	PRIMARY KEY (id_examenes)	
 );
 
 CREATE TABLE horas (
-	id SERIAL,
+	id_horas SERIAL,
 	fecha TIMESTAMP,
-	activa bool DEFAULT false,
-	PRIMARY KEY (id)
+	activa bool DEFAULT true,
+	PRIMARY KEY (id_horas)
 );
 
 CREATE TABLE horas_examenes (
-	id SERIAL,
-	id_hora INT REFERENCES horas(id),
-	id_examen INT REFERENCES examenes(id),
-	id_usuario INT REFERENCES usuarios(id),
+	id_horas_examenes SERIAL,
+	id_hora INT REFERENCES horas(id_horas),
+	id_examen INT REFERENCES examenes(id_examenes),
+	id_usuario INT REFERENCES usuarios(id_usuarios),
 	orden_medica VARCHAR (255),
-	PRIMARY KEY (id)
+	PRIMARY KEY (id_horas_examenes)
 );
 
 CREATE TABLE fichas_examenes (
-	id SERIAL,
-	id_hora_examen INT REFERENCES horas_examenes(id),
+	id_fichas_examenes SERIAL,
+	id_hora_examen INT REFERENCES horas_examenes(id_horas_examenes),
 	estado VARCHAR (255),
 	comentario VARCHAR (255),
 	resultado VARCHAR (255),
-	PRIMARY KEY (id)
+	PRIMARY KEY (id_fichas_examenes)
 );
 
 
